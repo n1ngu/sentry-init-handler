@@ -1,0 +1,41 @@
+[loggers]
+keys = root, test
+
+[handlers]
+keys = stdout, null, initsentry
+
+[formatters]
+keys = default
+
+[logger_root]
+level = INFO
+handlers = stdout, initsentry
+
+[logger_test]
+qualname = test
+level = DEBUG
+handlers = null
+propagate = 1
+
+[handler_stdout]
+class = StreamHandler
+formatter = default
+args = (sys.stdout,)
+
+[handler_null]
+class = NullHandler
+args = ()
+
+[handler_initsentry]
+class=sentry_init_handler.SentryInitHandler
+args = ()
+kwargs = {
+ 'max_breadcrumbs': 50,
+ 'debug': True,
+ 'default_integrations': True,
+ 'with_locals': True}
+
+[formatter_default]
+class = logging.Formatter
+format = [%(asctime)s] [%(process)d] [%(levelname)s] {%(name)s} %(message)s
+datefmt = %H:%M:%S

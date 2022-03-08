@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+"""Please do not write scripts this way"""
+
+import argparse
+import logging.config
+import random
+import time
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--logconf', dest='logconf', required=True)
+options = parser.parse_args()
+
+logging.config.fileConfig(options.logconf)
+logger = logging.getLogger('test')
+
+
+def suicide():
+    logger.info('will die')
+    raise Exception('death')
+
+
+try:
+    while True:
+        if random.random() < 0.2:
+            suicide()
+        else:
+            logger.info('continue')
+            time.sleep(1)
+except KeyboardInterrupt:
+    pass
